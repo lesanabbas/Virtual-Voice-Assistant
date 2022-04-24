@@ -77,3 +77,14 @@ You just have to go to the [link](https://www.lfd.uci.edu/~gohlke/pythonlibs/) a
 
 ![App Screenshot](https://github.com/lesanabbas/Virtual-Voice-Assistant/blob/main/Screenshot%202022-04-23%20175915.png)
 
+# Output of Google Search
+
+![App Screenshot](https://github.com/lesanabbas/Virtual-Voice-Assistant/blob/main/Output1.png)
+
+# Output of Opening Notepad
+
+![App Screenshot](https://github.com/lesanabbas/Virtual-Voice-Assistant/blob/main/Output2.png)
+
+## Authors
+
+- [@lesanabbas](https://github.com/lesanabbas)
