@@ -41,7 +41,7 @@ from FridayGUI import Ui_Gui
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
 # print(voices[1].id)
-engine.setProperty('voice', voices[2].id)
+engine.setProperty('voice', voices[0].id)
 engine.setProperty("rate", 190)
 engine.setProperty('volume', 1.0)
 engine.setProperty("languages", 'en')
@@ -52,24 +52,7 @@ def speak(audio):
     engine.runAndWait()
 
 
-def wishMe():
-    hour = int(datetime.datetime.now().hour)
-    if hour >= 0 and hour < 12:
-        speak("Good Morning!")
-
-    elif hour >= 12 and hour < 17:
-        speak("Good Afternoon!")
-
-    elif hour >= 17 and hour < 22:
-        speak("Good Evening")
-
-    else:
-        speak("Good Night!")
-
-    speak("I am Friday Sir. I am ready to take command")
-
-
-class MainThread(QThread):
+class MainThread(QThread):  
     def __init__(self):
         super(MainThread, self).__init__()
 
@@ -97,6 +80,23 @@ class MainThread(QThread):
             return "None"
         return q
 
+    def wishMe(self):
+        hour = int(datetime.datetime.now().hour)
+        if hour >= 0 and hour < 12:
+            speak("Good Morning!")
+
+        elif hour >= 12 and hour < 17:
+            speak("Good Afternoon!")
+
+        elif hour >= 17 and hour < 22:
+            speak("Good Evening")
+
+        else:
+            speak("Good Night!")
+
+        speak("I am Friday Sir. I am ready to take command")
+    
+    
     def account_info(self):
         with open('account_info.txt', 'r') as f:
             info = f.read().split()
@@ -138,7 +138,7 @@ class MainThread(QThread):
         speak("that's it for now I'will update you in some time")
 
     def selectedText2Speech(self):
-        pg.press('Ctrl+c')
+        pg.hotkey('ctrl', 'c')
         text = clipboard.paste()
         print(text)
         speak(text)
@@ -183,8 +183,7 @@ class MainThread(QThread):
 
     def screenshot(self):
         name_img = tt.time()
-        name_img = 'C:\\Users\\Abbas\\OneDrive\\Pictures\\Screenshots\\Screenshots{}.png'.format(
-            name_img)
+        name_img = 'C:\\Users\\Abbas\\OneDrive\\Pictures\\Screenshots\\Screenshots{}.png'.format(name_img)
         img = pg.screenshot(name_img)
         speak("done sir!")
         img.show()
@@ -224,15 +223,15 @@ class MainThread(QThread):
 
     def TaskException(self):
 
-        wishMe()
+        self.wishMe()
         while True:
             self.q = self.takeCommand().lower()
             print(self.q)
            
             if 'wikipedia' in self.q:
                 try:
-                    speak('Searching Wikipedia...')
-                    self.q = self.q.replace("wikipedia", "")
+                    speak('what you want to search on wikipedia')
+                    self.q = self.takeCommand()
                     results = wikipedia.summary(self.q, sentences=2)
                     speak("According to Wikipedia")
                     print(results)
@@ -361,6 +360,8 @@ class MainThread(QThread):
                 
             elif 'close yourself' in self.q:
                 speak('sure sir')
+                speak("Good Bye sir")
+                press_and_release('Alt + F4')
                 self.close_yourself()
                 sys.exit(app.exec_())
                 
@@ -419,11 +420,10 @@ class MainThread(QThread):
                 
 
             elif "time" in self.q:
-                strTime = datetime.datetime.now().strftime("%H:%M:%S")
-                strTime = strTime.split(":")
-                if(int(strTime[0]) > 12):
-                    strTime[0] = int(strTime[0])-12 
-                speak(f"Sir, the time is {strTime[0]} hour {strTime[1]} minutes{strTime[2]} seconds")
+                # strTime = datetime.datetime.now().strftime("%H:%M:%S")
+                strTime = datetime.datetime.today().strftime("%I:%M %p")
+                
+                speak(f"Sir, it's {strTime}")
 
             elif "date" in self.q:
                 self.date()
@@ -513,13 +513,13 @@ class Main(QMainWindow):
         super().__init__()
         self.ui = Ui_Gui()
         self.ui.setupUi(self)
-        self.setWindowIcon(QtGui.QIcon("C:\\Users\\Abbas\\OneDrive\\Desktop\\Brian Voice Assistant\\assets\\favicon.ico"))
+        self.setWindowIcon(QtGui.QIcon(".\\assets\\favicon.ico"))
         self.ui.pushButton.clicked.connect(self.startTask)
         self.ui.pushButton_2.clicked.connect(self.close)
-        self.ui.label.setPixmap(QtGui.QPixmap("C:\\Users\\Abbas\\OneDrive\\Desktop\\Brian Voice Assistant\\assets\\bg-img.jpg"))
+        self.ui.label.setPixmap(QtGui.QPixmap(".\\assets\\bg-img.jpg"))
         
     def startTask(self):
-        self.ui.movie = QtGui.QMovie("C:\\Users\\Abbas\\OneDrive\\Desktop\\Brian Voice Assistant\\assets\\center.gif")
+        self.ui.movie = QtGui.QMovie(".\\assets\\center.gif")
         self.ui.label_2.setMovie(self.ui.movie)
         self.ui.movie.start()
         
@@ -537,7 +537,8 @@ class Main(QMainWindow):
         self.ui.textBrowser_2.setText(label_time)
 
         
-app = QApplication(sys.argv)
+app = QApplication([])
+# app = QApplication(sys.argv)
 Gui = Main()
 Gui.show()
-sys.exit(app.exec_())
+exit(app.exec_())
