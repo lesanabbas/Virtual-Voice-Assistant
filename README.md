@@ -75,5 +75,5 @@ You just have to go to the [link](https://www.lfd.uci.edu/~gohlke/pythonlibs/) a
 
 ## Screenshots
 
-![App Screenshot]()
+![App Screenshot](https://github.com/lesanabbas/Virtual-Voice-Assistant/blob/main/Screenshot%202022-04-23%20175915.png)
 
